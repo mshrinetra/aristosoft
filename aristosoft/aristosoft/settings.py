@@ -25,7 +25,8 @@ SECRET_KEY = 'd9a5adfny@rux8m=dli((ziqs9oat-zqipo1hs!-(^o#6f7mqtd7f*q-*3%y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['aristosoft.com',
+                 'www.aristosoft.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -38,9 +39,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Django-AllAuth apps for social logins
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+
+    # Created apps for the site
     'authservice',
     'home',
     'sitelinks',
+
+    # To run ssl server, from django-sslserver
+    'sslserver'
 ]
 
 MIDDLEWARE = [
@@ -126,3 +140,37 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+
+# Settings related to social logins
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 12
+
+LOGIN_REDIRECT_URL = '/'
+
+{
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+        'SCOPE': ['email'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.12',
+    },
+    'google': {
+        'SCOPE': [
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+
+}
