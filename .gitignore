@@ -102,3 +102,15 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# VENV, and Editor configurations
+.env
+.env/*
+.venv
+.venv/*
+.vscode
+.vscode/*
+
+
+# Materialize src
+materialize-src/
